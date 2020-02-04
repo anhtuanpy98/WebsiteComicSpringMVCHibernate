@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd" xmlns:mvc="http://www.springframework.org/schema/mvc" xmlns:tx="http://www.springframework.org/schema/tx" xmlns:p="http://www.springframework.org/schema/p" xmlns:context="http://www.springframework.org/schema/context" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.springframework.org/schema/beans">
+
+<!-- Kết nối CSDL -->
+
+
+<bean p:password="1234" p:username="sa" p:url="jdbc:sqlserver://localhost:1433; Database=BanSach" p:driverClassName="com.microsoft.sqlserver.jdbc.SQLServerDriver" class="org.springframework.jdbc.datasource.DriverManagerDataSource" id="dataSource"> </bean>
+
+<!-- Cấu hình Hibernate -->
+
+
+
+<bean class="org.springframework.orm.hibernate4.LocalSessionFactoryBean" id="sessionFactory">
+
+<property ref="dataSource" name="dataSource"/>
+
+
+<property name="hibernateProperties">
+
+
+<props>
+
+<prop key="hibernate.dialect">org.hibernate.dialect.SQLServerDialect</prop>
+
+<prop key="hibernate.show_sql">false</prop>
+
+</props>
+
+</property>
+
+<property name="packagesToScan" value="project.entity"/>
+
+</bean>
+
+<!-- Transaction Manager -->
+
+
+<bean class="org.springframework.orm.hibernate4.HibernateTransactionManager" id="transactionManager" p:sessionFactory-ref="sessionFactory"/>
+
+<tx:annotation-driven transaction-manager="transactionManager"/>
+
+</beans>
